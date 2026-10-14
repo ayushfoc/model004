@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Simple AI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef2ff;
+      display: flex;
+      justify-content: center;
+      padding: 40px 12px;
+    }
+
+    .chat {
+      width: 400px;
+      max-width: 100%;
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px #0002;
+    }
+
+    h2 { text-align: center; color: #4338ca; }
+
+    #messages {
+      height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 12px;
+    }
+
+    .user { color: #4338ca; margin: 12px 0; }
+    .bot { color: #15803d; margin: 12px 0; }
+
+    .controls { display: flex; gap: 8px; }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    button {
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #4338ca;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat">
+    <h2>🤖 My Simple AI</h2>
+    <div id="messages">
+      <p class="bot"><b>AI:</b> Hello! Ask me anything simple.</p>
+    </div>
+
+    <div class="controls">
+      <input id="input" placeholder="Type a message..."
+             onkeydown="if(event.key==='Enter') sendMessage()">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    function getAIResponse(message) {
+      const text = message.toLowerCase();
+
+      if (text.includes("hello") || text.includes("hi")) {
+        return "Hello! How can I help you?";
+      }
+
+      if (text.includes("your name")) {
+        return "I am My Simple AI!";
+      }
+
+      if (text.includes("how are you")) {
+        return "I am great! Thanks for asking.";
+      }
+
+      if (text.includes("what is ai")) {
+        return "AI means Artificial Intelligence.";
+      }
+
+      if (text.includes("time")) {
+        return "I am a simple chatbot and do not have a live clock.";
+      }
+
+      if (text.includes("bye")) {
+        return "Goodbye! Have a nice day.";
+      }
+
+      return "I am still learning. Try asking me something else!";
+    }
+
+    function sendMessage() {
+      const input = document.getElementById("input");
+      const messages = document.getElementById("messages");
+      const text = input.value.trim();
+
+      if (!text) return;
+
+      messages.innerHTML +=
+        `<p class="user"><b>You:</b> ${escapeHTML(text)}</p>`;
+
+      const answer = getAIResponse(text);
+
+      messages.innerHTML +=
+        `<p class="bot"><b>AI:</b> ${escapeHTML(answer)}</p>`;
+
+      input.value = "";
+      messages.scrollTop = messages.scrollHeight;
+      input.focus();
+    }
+
+    function escapeHTML(text) {
+      return text.replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+    }
+  </script>
+</body>
+</html>
